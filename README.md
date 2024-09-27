@@ -1,2 +1,10 @@
-# masters-gradsum
-This is the public version of my master's research work. Opensource code and my final dissertation will be posted once I can.
+# Masters Research Opensource Repository
+This work is titled: "The Application of Attribution Methods to Explain an End-To-End Model For Self-Driving Cars" and was done through the University of the Witwatersrand and supervised by Professor Richard Klein in the School of Computer Science and Applied Mathematics.
+
+# Structure
+The dissertation and abstract are located in the root of this repository. The source code is located in `src/`
+
+# TODO
+- [] File structure
+- [] Usage
+- [] Future experiments
