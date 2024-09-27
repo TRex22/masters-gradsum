@@ -45,9 +45,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: 'trex22/masters_env_py3_12:latest'
-      credentials:
-        username: ${{ secrets.docker_hub_username }}
-        password: ${{ secrets.docker_hub_password }}
     steps:
       # - name: Maximize build space
       #   uses: easimon/maximize-build-space@master
