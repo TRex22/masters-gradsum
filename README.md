@@ -4,6 +4,10 @@ This work is titled: "The Application of Attribution Methods to Explain an End-T
 # Structure
 The dissertation and abstract are located in the root of this repository. The source code is located in `src/`
 
+# Main documents
+- [Abstract](Abstract.pdf)
+- [Full Dissertation](Dissertation-Unsigned.pdf)
+
 # TODO
 - [] File structure
 - [] Usage
