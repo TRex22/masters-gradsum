@@ -1,0 +1,136 @@
+name: Masters Repo Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+# build-dissertation:
+#   runs-on: ubuntu-latest
+#   steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v2
+#     - uses: dorny/paths-filter@v2
+#       id: filter
+#       with:
+#         filters: |
+#           dissertation:
+#             - './dissertation/**'
+#     - name: Install required packages and compile PDFs
+#       uses: xu-cheng/texlive-action/small@v1
+#       if: steps.filter.outputs.dissertation == 'true'
+#       with:
+#         run: |
+#           tlmgr init-usertree
+#           tlmgr update --self --verify-repo=none
+#           tlmgr install --verify-repo=none bbold ifoddpage ieeetran algorithm2e relsize multirow soul glossaries mfirstuc xfor datatool substr adjustbox collectbox ucs bbm bbm-macros vhistory svg trimspaces catchfile transparent preprint subfigure nowidow cleveref bold-extra placeins multirow algorithms algorithmicx
+#           texhash
+#           apk add inkscape
+#           cd ./dissertation && make all
+#       env:
+#         DEBIAN_FRONTEND: noninteractive
+# Notes:
+# tlmgr repository add ftp://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2021/tlnet-final
+# tlmgr option repository ftp://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2021/tlnet-final
+
+# https://github.com/marketplace/actions/maximize-build-disk-space
+# https://github.com/actions/runner-images/issues/2840#issuecomment-790492173
+
+  build-src:
+    runs-on: ubuntu-latest
+    container:
+      image: 'trex22/masters_env_py3_12:latest'
+      credentials:
+        username: ${{ secrets.docker_hub_username }}
+        password: ${{ secrets.docker_hub_password }}
+    steps:
+      # - name: Maximize build space
+      #   uses: easimon/maximize-build-space@master
+      #   with:
+      #     root-reserve-mb: 512
+      #     swap-size-mb: 1024
+      #     remove-dotnet: 'true'
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            src:
+              - './src/**'
+
+      - name: Activate Conda Environment
+        if: steps.filter.outputs.src == 'true'
+        shell: bash
+        run: conda init && source /github/home/.bashrc && conda activate custom-environment
+
+      - name: Check Conda Environment Info
+        if: steps.filter.outputs.src == 'true'
+        shell: bash
+        run: source /github/home/.bashrc && conda activate custom-environment && conda info
+
+      - name: Check Conda Environment List
+        if: steps.filter.outputs.src == 'true'
+        shell: bash
+        run: source /github/home/.bashrc && conda activate custom-environment && conda list
+
+      - name: Run simple tests in Conda Environment
+        if: steps.filter.outputs.src == 'true'
+        shell: bash
+        run: cd ./src && source /github/home/.bashrc && conda activate custom-environment && python simple_test.py
+
+      - name: Run model compilation in Conda Environment
+        if: steps.filter.outputs.src == 'true'
+        shell: bash
+        run: cd ./src && source /github/home/.bashrc && conda activate custom-environment && python compile_test.py
+
+      - name: Run config loading test in Conda Environment
+        if: steps.filter.outputs.src == 'true'
+        shell: bash
+        run: cd ./src && source /github/home/.bashrc && conda activate custom-environment && python config_test.py
+
+      - name: Run automatic DataSet Loading Tests
+        if: steps.filter.outputs.src == 'true'
+        shell: bash
+        run: cd ./src && source /github/home/.bashrc && conda activate custom-environment && python automatic_dataset_test.py
+
+      - name: Run Metrics Tests
+        if: steps.filter.outputs.src == 'true'
+        shell: bash
+        run: cd ./src && source /github/home/.bashrc && conda activate custom-environment && python metrics_test.py
+
+      - name: Run GradCAM Library Tests
+        if: steps.filter.outputs.src == 'true'
+        shell: bash
+        run: cd ./src && source /github/home/.bashrc && conda activate custom-environment && python gradcam_library_tests.py
+
+      - name: Run GradCAM Count Tests
+        if: steps.filter.outputs.src == 'true'
+        shell: bash
+        run: cd ./src && source /github/home/.bashrc && conda activate custom-environment && python count_and_label_test.py
+
+      - name: Run GradCAM Tests
+        if: steps.filter.outputs.src == 'true'
+        shell: bash
+        run: cd ./src && source /github/home/.bashrc && conda activate custom-environment && python gradcam_tests.py
+
+      - name: Run GradCAM Sanity Tests
+        if: steps.filter.outputs.src == 'true'
+        shell: bash
+        run: cd ./src && source /github/home/.bashrc && conda activate custom-environment && python gradcam_sanity_test.py
+
+      - name: Run VisionTransformer Tests
+        if: steps.filter.outputs.src == 'true'
+        shell: bash
+        run: cd ./src && source /github/home/.bashrc && conda activate custom-environment && python vision_transformer_test.py
+
+      - name: Run Binary Label Tests
+        if: steps.filter.outputs.src == 'true'
+        shell: bash
+        run: cd ./src && source /github/home/.bashrc && conda activate custom-environment && python binary_label_test.py
