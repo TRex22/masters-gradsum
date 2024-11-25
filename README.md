@@ -7,7 +7,7 @@ The dissertation and abstract are located in the root of this repository. The so
 # Main documents
 - [Abstract](Abstract.pdf)
 - [Full Dissertation](Dissertation-Unsigned.pdf)
-- [Wits Innovation Day 26 Nov 2024](Wits Innovation Day 26 Nov 2024 Poster.pdf)
+- [Wits Innovation Day 26 Nov 2024](Wits-Innovation-Day-26-Nov-2024-Poster.pdf)
 
 # About me
 I am currently a Principal Software Engineer at nCino and have a keen interest in computer science and artificial intelligence. This repository is the public release of all my work related to my master's degree.
